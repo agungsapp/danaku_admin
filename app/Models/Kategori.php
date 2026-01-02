@@ -11,4 +11,9 @@ class Kategori extends Model
         'nama',
         'tipe',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
