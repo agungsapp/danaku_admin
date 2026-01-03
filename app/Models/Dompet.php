@@ -12,4 +12,9 @@ class Dompet extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function transaksis()
+    {
+        return $this->hasMany(Transaksi::class);
+    }
 }

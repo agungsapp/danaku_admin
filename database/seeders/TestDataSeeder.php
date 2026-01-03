@@ -12,33 +12,28 @@ class TestDataSeeder extends Seeder
      */
     public function run(): void
     {
-        $dompets = [
-            ['user_id' => 1, 'nama' => 'Dana Harian', 'saldo' => 1000000],
-            ['user_id' => 1, 'nama' => 'Dana Darurat', 'saldo' => 1000000],
-            ['user_id' => 1, 'nama' => 'Dana Tabungan', 'saldo' => 1000000],
-        ];
-        $kategoris = [
-            [
-                'user_id' => 1,
-                'nama' => 'Transportasi',
-                'tipe' => 'out',
-            ],
-            [
-                'user_id' => 1,
-                'nama' => 'Makanan',
-                'tipe' => 'out',
-            ],
-            [
-                'user_id' => 1,
-                'nama' => 'Gaji',
-                'tipe' => 'in',
-            ]
-        ];
-        foreach ($dompets as $dompet) {
-            \App\Models\Dompet::create($dompet);
-        }
-        foreach ($kategoris as $kategori) {
-            \App\Models\Kategori::create($kategori);
-        }
+        // Note: Dompets dan Kategoris default sudah otomatis dibuat oleh UserObserver
+        // Seeder ini menambah data testing tambahan
+        
+        // Tambah dompet tambahan untuk user test (user_id = 2)
+        \App\Models\Dompet::create([
+            'user_id' => 2,
+            'nama' => 'Dana Darurat',
+            'saldo' => 5000000,
+            'deskripsi' => 'Dana darurat untuk keperluan mendesak'
+        ]);
+
+        // Tambah kategori tambahan untuk user test
+        \App\Models\Kategori::create([
+            'user_id' => 2,
+            'nama' => 'Makanan',
+            'tipe' => 'out',
+        ]);
+
+        \App\Models\Kategori::create([
+            'user_id' => 2,
+            'nama' => 'Bonus',
+            'tipe' => 'in',
+        ]);
     }
 }

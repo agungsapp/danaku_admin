@@ -13,7 +13,11 @@ class ManageKategoris extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            CreateAction::make()
+                ->mutateFormDataUsing(function (array $data): array {
+                    $data['user_id'] = auth()->id();
+                    return $data;
+                }),
         ];
     }
 }
