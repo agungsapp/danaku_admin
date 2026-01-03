@@ -65,15 +65,21 @@ class TransactionService
     {
         return DB::transaction(function () use ($transaksi, $data) {
             // Rollback old transaction effect
-            $oldDompet = $transaksi->dompet;
-            $oldKategori = $transaksi->kategori;
+            $originalDompetId = $transaksi->getOriginal('dompet_id');
+            $originalKategoriId = $transaksi->getOriginal('kategori_id');
+            $originalJumlah = $transaksi->getOriginal('jumlah');
+
+            $oldDompet = Dompet::find($originalDompetId);
+            $oldKategori = Kategori::find($originalKategoriId);
             
-            if ($oldKategori->tipe === 'in') {
-                $oldDompet->saldo -= $transaksi->jumlah;
-            } else {
-                $oldDompet->saldo += $transaksi->jumlah;
+            if ($oldDompet && $oldKategori) {
+                if ($oldKategori->tipe === 'in') {
+                    $oldDompet->saldo -= $originalJumlah;
+                } else {
+                    $oldDompet->saldo += $originalJumlah;
+                }
+                $oldDompet->save();
             }
-            $oldDompet->save();
 
             // Validate new dompet belongs to user
             $newDompet = Dompet::where('id', $data['dompet_id'])
